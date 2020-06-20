@@ -1,3 +1,4 @@
+use exitfailure::ExitFailure;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
@@ -13,7 +14,7 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-fn main() -> std::io::Result<()> {
+fn main() -> Result<(), ExitFailure> {
     // try to parse args into Cli struct
     let args = Cli::from_args();
     let path = Path::new(&args.path);
