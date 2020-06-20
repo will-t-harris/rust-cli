@@ -1,21 +1,37 @@
+#![feature(option_result_contains)]
+use std::fs::File;
+use std::io::prelude::*;
+use std::io::BufReader;
+use std::path::Path;
 use structopt::StructOpt;
 
-// Search for a pattern in a file & display the lines that contain it
 #[derive(StructOpt)]
 struct Cli {
-    // The pattern to look for
+    // the pattern to look for
     pattern: String,
-    // The path to the file to read
+    // the path to the file to read
     #[structopt(parse(from_os_str))]
     path: std::path::PathBuf,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> std::io::Result<()> {
+    // try to parse args into Cli struct
     let args = Cli::from_args();
-
+    let path = Path::new(&args.path);
+    let display = path.display();
     // read file at path
-    let content = std::fs::read_to_string(&args.path)?;
+    let file = File::open(path)?;
+    let reader = BufReader::new(file);
+    for line in reader.lines() {
+        match line {
+            Ok(line) => {
+                if line.contains(&args.pattern) {
+                    println!("{}", line)
+                }
+            }
+            Err(err) => println!("ERROR: {}", err),
+        }
+    }
 
-    println!("file content: {}", content);
     Ok(())
 }
