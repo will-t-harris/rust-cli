@@ -1,4 +1,3 @@
-#![feature(option_result_contains)]
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
