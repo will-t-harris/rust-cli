@@ -10,16 +10,12 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::from_args();
 
     // read file at path
-    let content = std::fs::read_to_string(&args.path).expect("could not read file");
+    let content = std::fs::read_to_string(&args.path)?;
 
-    // iterate over file lines, print each line that contains pattern
-    for line in content.lines() {
-        if line.contains(&args.pattern) {
-            println!("{}", line);
-        }
-    }
+    println!("file content: {}", content);
+    Ok(())
 }
