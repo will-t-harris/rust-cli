@@ -13,8 +13,13 @@ struct Cli {
 fn main() {
     let args = Cli::from_args();
 
-    let pattern = std::env::args().nth(1).expect("no pattern given");
-    let path = std::env::args().nth(2).expect("no path given");
+    // read file at path
+    let content = std::fs::read_to_string(&args.path).expect("could not read file");
 
-    println!("Pattern: {} -- Path: {}", pattern, path);
+    // iterate over file lines, print each line that contains pattern
+    for line in content.lines() {
+        if line.contains(&args.pattern) {
+            println!("{}", line);
+        }
+    }
 }
