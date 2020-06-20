@@ -18,7 +18,6 @@ fn main() -> std::io::Result<()> {
     // try to parse args into Cli struct
     let args = Cli::from_args();
     let path = Path::new(&args.path);
-    let display = path.display();
     // read file at path
     let file = File::open(path)?;
     let reader = BufReader::new(file);
